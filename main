@@ -1,0 +1,167 @@
+#include <iostream>
+#include <string>
+
+// Incluir la lista simplemente ligada que ya está definida
+#include "ListaLigada.h"
+
+// Definición de la clase SocioClub
+class SocioClub {
+private:
+    int numeroSocio;
+    std::string nombre;
+    std::string domicilio;
+public:
+    SocioClub(){}
+    SocioClub(int numero, const std::string& nombre, const std::string& domicilio)
+        : numeroSocio(numero), nombre(nombre), domicilio(domicilio) {}
+
+    // Sobrecarga del operador < para ordenar por número de socio
+    bool operator<(const SocioClub& otro) const {
+        return numeroSocio < otro.numeroSocio;
+    }
+
+    // Función para mostrar los datos del socio
+    void mostrarDatos() const {
+        std::cout << "Número de socio: " << numeroSocio << "\n";
+        std::cout << "Nombre: " << nombre << "\n";
+        std::cout << "Domicilio: " << domicilio << "\n";
+    }
+
+    // Función para obtener el número de socio
+    int getNumeroSocio() const {
+        return numeroSocio;
+    }
+
+    // Función para buscar por nombre y domicilio
+    bool buscar(const std::string& nombreBuscar, const std::string& domicilioBuscar) const {
+        return (nombre == nombreBuscar && domicilio == domicilioBuscar);
+    }
+};
+
+// Función para mostrar el menú y procesar las opciones
+void mostrarMenu(LSLSE<SocioClub>& listaSocios) {
+    int opcion;
+    do {
+        std::cout << "\nMenú de opciones:\n";
+        std::cout << "1. Registrar un nuevo socio\n";
+        std::cout << "2. Dar de baja un socio\n";
+        std::cout << "3. Generar un reporte de socios\n";
+        std::cout << "4. Buscar socio por nombre y domicilio\n";
+        std::cout << "5. Calcular e imprimir el total de socios registrados\n";
+        std::cout << "6. Salir\n";
+        std::cout << "Seleccione una opción: ";
+        std::cin >> opcion;
+
+        switch (opcion) {
+            case 1: {
+                int numero;
+                std::string nombre, domicilio;
+                std::cout << "Ingrese el número de socio: ";
+                std::cin >> numero;
+                std::cout << "Ingrese el nombre del socio: ";
+                std::cin.ignore();
+                std::getline(std::cin, nombre);
+                std::cout << "Ingrese el domicilio del socio: ";
+                std::getline(std::cin, domicilio);
+
+                // Verificar si ya existe un socio con ese número
+                bool existe = false;
+                node<SocioClub>* aux = listaSocios.primero();
+                while (aux != nullptr) {
+                    if (aux->getData().getNumeroSocio() == numero) {
+                        existe = true;
+                        break;
+                    }
+                    aux = aux->getSig();
+                }
+
+                if (existe) {
+                    std::cout << "Ya existe un socio con ese número.\n";
+                } else {
+                    SocioClub nuevoSocio(numero, nombre, domicilio);
+                    listaSocios.insertar(listaSocios.ultimo(), nuevoSocio);
+                    std::cout << "Socio registrado exitosamente.\n";
+                }
+                break;
+            }
+            case 2: {
+                int numeroBaja;
+                std::cout << "Ingrese el número de socio a dar de baja: ";
+                std::cin >> numeroBaja;
+
+                bool encontrado = false;
+                node<SocioClub>* aux = listaSocios.primero();
+                while (aux != nullptr) {
+                    if (aux->getData().getNumeroSocio() == numeroBaja) {
+                        listaSocios.eliminar(aux);
+                        encontrado = true;
+                        std::cout << "Socio dado de baja exitosamente.\n";
+                        break;
+                    }
+                    aux = aux->getSig();
+                }
+
+                if (!encontrado) {
+                    std::cout << "No se encontró un socio con ese número.\n";
+                }
+                break;
+            }
+            case 3: {
+                listaSocios.imprimir();
+                break;
+            }
+            case 4: {
+                std::string nombreBuscar, domicilioBuscar;
+                std::cout << "Ingrese el nombre del socio a buscar: ";
+                std::cin.ignore();
+                std::getline(std::cin, nombreBuscar);
+                std::cout << "Ingrese el domicilio del socio a buscar: ";
+                std::getline(std::cin, domicilioBuscar);
+
+                node<SocioClub>* aux = listaSocios.primero();
+                bool encontrado = false;
+                while (aux != nullptr) {
+                    if (aux->getData().buscar(nombreBuscar, domicilioBuscar)) {
+                        aux->getData().mostrarDatos();
+                        encontrado = true;
+                        break;
+                    }
+                    aux = aux->getSig();
+                }
+
+                if (!encontrado) {
+                    std::cout << "No se encontró un socio con ese nombre y domicilio.\n";
+                }
+                break;
+            }
+            case 5: {
+                std::cout << "Total de socios registrados: " << listaSocios.totalElementos() << "\n";
+                break;
+            }
+            case 6:
+                std::cout << "Saliendo del programa...\n";
+                break;
+            default:
+                std::cout << "Opción inválida. Intente de nuevo.\n";
+                break;
+        }
+    } while (opcion != 6);
+}
+
+int main() {
+    LSLSE<SocioClub> listaSocios;
+
+    // EJEMPLO
+    SocioClub socio1(1001, "Juan Pérez", "Calle A #123");
+    SocioClub socio2(1002, "María López", "Av. B #456");
+    SocioClub socio3(1003, "Pedro Martínez", "Calle C #789");
+
+    listaSocios.insertar(listaSocios.ultimo(), socio1);
+    listaSocios.insertar(listaSocios.ultimo(), socio2);
+    listaSocios.insertar(listaSocios.ultimo(), socio3);
+
+    // Mostrar el menú de opciones
+    mostrarMenu(listaSocios);
+
+    return 0;
+}
