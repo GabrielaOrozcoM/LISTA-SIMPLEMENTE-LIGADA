@@ -43,25 +43,25 @@ void mostrarMenu(LSLSE<SocioClub>& listaSocios) {
     int opcion;
     do {
         std::cout << "\nMenú de opciones:\n";
-        std::cout << "1. Registrar un nuevo socio\n";
-        std::cout << "2. Dar de baja un socio\n";
-        std::cout << "3. Generar un reporte de socios\n";
-        std::cout << "4. Buscar socio por nombre y domicilio\n";
-        std::cout << "5. Calcular e imprimir el total de socios registrados\n";
-        std::cout << "6. Salir\n";
-        std::cout << "Seleccione una opción: ";
+        std::cout << "1. REGISTRAR\n";
+        std::cout << "2. DAR DE BAJA\n";
+        std::cout << "3. REPORTE DE SOCIOS\n";
+        std::cout << "4. BUSQUEDA POR NOMBRE Y DOMICILIO\n";
+        std::cout << "5. CALCULAR E IMPRIMIR SOCIOS REGISTRADOS\n";
+        std::cout << "6. SALIR\n";
+        std::cout << "OPCION: ";
         std::cin >> opcion;
 
         switch (opcion) {
             case 1: {
                 int numero;
                 std::string nombre, domicilio;
-                std::cout << "Ingrese el número de socio: ";
+                std::cout << "NUMERO: ";
                 std::cin >> numero;
-                std::cout << "Ingrese el nombre del socio: ";
+                std::cout << "NOMBRE: ";
                 std::cin.ignore();
                 std::getline(std::cin, nombre);
-                std::cout << "Ingrese el domicilio del socio: ";
+                std::cout << "DOMICILIO: ";
                 std::getline(std::cin, domicilio);
 
                 // Verificar si ya existe un socio con ese número
@@ -76,17 +76,17 @@ void mostrarMenu(LSLSE<SocioClub>& listaSocios) {
                 }
 
                 if (existe) {
-                    std::cout << "Ya existe un socio con ese número.\n";
+                    std::cout << "YA EXISTE UN SOCIO CON ESE NUMERO\n";
                 } else {
                     SocioClub nuevoSocio(numero, nombre, domicilio);
                     listaSocios.insertar(listaSocios.ultimo(), nuevoSocio);
-                    std::cout << "Socio registrado exitosamente.\n";
+                    std::cout << "SOCIO REGISTRADO\n";
                 }
                 break;
             }
             case 2: {
                 int numeroBaja;
-                std::cout << "Ingrese el número de socio a dar de baja: ";
+                std::cout << "NUMERO PARA BAJA: ";
                 std::cin >> numeroBaja;
 
                 bool encontrado = false;
@@ -95,14 +95,14 @@ void mostrarMenu(LSLSE<SocioClub>& listaSocios) {
                     if (aux->getData().getNumeroSocio() == numeroBaja) {
                         listaSocios.eliminar(aux);
                         encontrado = true;
-                        std::cout << "Socio dado de baja exitosamente.\n";
+                        std::cout << "SOCIO DADO DE BAJA\n";
                         break;
                     }
                     aux = aux->getSig();
                 }
 
                 if (!encontrado) {
-                    std::cout << "No se encontró un socio con ese número.\n";
+                    std::cout << "SOCIO NO ENCONTRADO\n";
                 }
                 break;
             }
@@ -112,10 +112,10 @@ void mostrarMenu(LSLSE<SocioClub>& listaSocios) {
             }
             case 4: {
                 std::string nombreBuscar, domicilioBuscar;
-                std::cout << "Ingrese el nombre del socio a buscar: ";
+                std::cout << "NOMBRE DEL SOCIO: ";
                 std::cin.ignore();
                 std::getline(std::cin, nombreBuscar);
-                std::cout << "Ingrese el domicilio del socio a buscar: ";
+                std::cout << "DOMICILIO DEL SOCIO: ";
                 std::getline(std::cin, domicilioBuscar);
 
                 node<SocioClub>* aux = listaSocios.primero();
@@ -130,19 +130,19 @@ void mostrarMenu(LSLSE<SocioClub>& listaSocios) {
                 }
 
                 if (!encontrado) {
-                    std::cout << "No se encontró un socio con ese nombre y domicilio.\n";
+                    std::cout << "SOCIO NO ENCONTRADO\n";
                 }
                 break;
             }
             case 5: {
-                std::cout << "Total de socios registrados: " << listaSocios.totalElementos() << "\n";
+                std::cout << "TOTAL DE SOCIOS REGISTRADOS: " << listaSocios.totalElementos() << "\n";
                 break;
             }
             case 6:
-                std::cout << "Saliendo del programa...\n";
+                std::cout << "SALIENDO\n";
                 break;
             default:
-                std::cout << "Opción inválida. Intente de nuevo.\n";
+                std::cout << "OPCION NO VALIDA || INTENTAR DE NUEVO\n";
                 break;
         }
     } while (opcion != 6);
@@ -152,9 +152,9 @@ int main() {
     LSLSE<SocioClub> listaSocios;
 
     // EJEMPLO
-    SocioClub socio1(1001, "Juan Pérez", "Calle A #123");
-    SocioClub socio2(1002, "María López", "Av. B #456");
-    SocioClub socio3(1003, "Pedro Martínez", "Calle C #789");
+    SocioClub socio1(1001, "FULANO2", "CALLE 1");
+    SocioClub socio2(1002, "MANGANO", "CALLE 2");
+    SocioClub socio3(1003, "PERENGANI", "CALLE 3");
 
     listaSocios.insertar(listaSocios.ultimo(), socio1);
     listaSocios.insertar(listaSocios.ultimo(), socio2);
